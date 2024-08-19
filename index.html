@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polizia Locale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #00b37d;
+            color: #fff;
+            text-align: center;
+            padding: 40px;
+        }
+
+        header img {
+            max-width: 150px; /* Imposta una larghezza massima per il logo */
+            height: auto; /* Mantiene le proporzioni originali dell'immagine */
+            display: block;
+            margin: 0 auto; /* Centra l'immagine orizzontalmente */
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            gap: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .sidebar {
+            flex: 1;
+            max-width: 300px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            text-align: center;
+        }
+
+        .sidebar .logo {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .sidebar .logo img {
+            max-width: 80%; /* Riduce la dimensione del logo nella sidebar */
+            height: auto;
+        }
+
+        .sidebar .comparto {
+            background-color: #e1e1e1;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+        }
+
+        .sidebar .comparto:hover {
+            background-color: #d0d0d0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+        }
+
+        .comparto.active {
+            background-color: #0056b3;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .comparto.active::before {
+            content: "✓";
+            margin-right: 10px;
+            color: #fff;
+        }
+
+        .pdfListContainer {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .pdfList {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            opacity: 0;
+        }
+
+        .pdfList.show {
+            max-height: 1000px; /* Sufficient height for the content */
+            opacity: 1;
+        }
+
+        .pdfList a {
+            display: block;
+            margin: 10px 0;
+            text-decoration: none;
+            color: #0056b3;
+            font-weight: bold;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        .pdfList a:hover {
+            color: #003d7a;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                max-width: 100%;
+                position: static;
+            }
+
+            .pdfListContainer {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header img {
+                max-width: 80px;
+            }
+
+            .sidebar {
+                padding: 10px;
+            }
+
+            .comparto {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .pdfList a {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo Polizia Locale 1.png" alt="Logo della Web App">
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="sidebar">
+                <div class="logo">
+                    <img src="logo Polizia locale.JPG" alt="Logo della Sidebar">
+                </div>
+                <h2>Catalogo Discipline</h2>
+                <div class="comparto" data-target="pdfList1">Regolamenti del Comune di Monza</div>
+                <div class="comparto" data-target="pdfList2">Veicoli Targa Estera</div>
+                <div class="comparto" data-target="pdfList3">Polizia Giudiziaria</div>
+                <div class="comparto" data-target="pdfList4">Codici</div>
+                <div class="comparto" data-target="pdfList5">Riforma Cartabia</div>
+                <div class="comparto" data-target="pdfList6">Decreto Caivano</div>
+                <div class="comparto" data-target="pdfList7">Codice Rosso</div>
+                <div class="comparto" data-target="pdfList8">Codice Della Strada</div>
+                <div class="comparto" data-target="pdfList9">Ebrezza/Stupefacenti 186-187</div>
+                <div class="comparto" data-target="pdfList10">Immigrazione</div>
+                <div class="comparto" data-target="pdfList11">TSO</div>
+                <div class="comparto" data-target="pdfList12">Falso Documentale</div>
+                <div class="comparto" data-target="pdfList13">Autotrasporto</div>
+                <div class="comparto" data-target="pdfList14">Infortunistica Stradale</div>
+                <div class="comparto" data-target="pdfList15">Riforma Cartabia</div>
+                <div class="comparto" data-target="pdfList16">Inquinamento</div>
+                <div class="comparto" data-target="pdfList17">Droga</div>
+                <div class="comparto" data-target="pdfList18">Reati Depenalizzati</div>
+                <div class="comparto" data-target="pdfList19">Armi</div>
+                <div class="comparto" data-target="pdfList20">Droni</div>
+                <div class="comparto" data-target="pdfList21">Videoriprese</div>
+                <div class="comparto" data-target="pdfList22">Ambientale</div>
+                <div class="comparto" data-target="pdfList23">Edilizia</div>
+                <div class="comparto" data-target="pdfList24">Annonaria</div>
+                <div class="comparto" data-target="pdfList25">Monopattini</div>
+            </div>
+
+            <div class="pdfListContainer">
+                <div class="pdfList" id="pdfList1">
+                    <a href="Regolamenti del Comune di Monza/Regolamento artisti di strada.pdf" target="_blank">Regolamento Artisti di Strada</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Commercio area pubblica Monza .pdf" target="_blank">Regolamento Commercio Area Pubblica Monza</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento PL Monza.pdf" target="_blank">Regolamento PL Monza</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Benessere animali .pdf" target="_blank">Regolamento Benessere degli animali</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Comunale di Polizia Urbana 2019.pdf" target="_blank">Regolamento Comunale di Polizia Urbana 2019</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento_edilizio.pdf" target="_blank">Regolamento Edilizia 2019</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Parco e Giardini Monza.pdf" target="_blank">Regolamento Parco e Giardini Monza </a>
+                    <a href="Regolamenti del Comune di Monza/Prontuario Parco e Girardini Monza.pdf" target="_blank">Prontuario Parco e Giardini Monza</a>
+                    <a href="Regolamenti del Comune di Monza/ORDINANZAZTL Monza 2017.pdf" target="_blank">Ordinanza ZTL Monza 2017</a>
+                    <a href="Regolamenti del Comune di Monza/MAPPA ZTL.pdf" target="_blank">Mappa ZTL Monza</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Regionale tutela animali d'affezione e randaggismo.pdf" target="_blank">Regolamento Regionale tutela animali d'affezione e randagismo</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento aree Cani.pdf" target="_blank">Regolamento AREE CANI</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Illuminazione Pubblica e Privata.pdf" target="_blank">Regolamento Illuminazione Pubblica e Privata</a>
+                    <a href="Regolamenti del Comune di Monza/Piano di ZONIZZAZIONE ACUSTICA.pdf" target="_blank">Piano di ZONIZZAZIONE ACUSTICA</a>
+                    <a href="Regolamenti del Comune di Monza/PIANO GENERALE IMPIANTI PUBBLICITà.pdf" target="_blank">Regolamento IMPIANTI PUBBLICITà</a>
+                    <a href="Regolamenti del Comune di Monza/Prontuario Giochi Leciti.pdf" target="_blank">Prontuario Giochi Leciti</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Gioco d'azzardo Lecito.pdf" target="_blank">Regolamento Gioco d'azzardo Lecito</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Manomissione suolo e sottosuolo.pdf" target="_blank">Regolamento Manomissione suolo e sottosuolo</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Parrucchieri ed estetisti.pdf" target="_blank">Regolamento Parrucchieri ed estetisti</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Polizia Mortuaria.pdf" target="_blank">Regolamento Polizia Mortuaria</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento PUBBLICI ESERCIZI SOMMINISTRAZIONE.pdf" target="_blank">Regolamento Pubblici esercizi somministrazione</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Regionale tutela animali d'affezione e randaggismo.pdf" target="_blank">Regolamento Regionale tutela animali d'affezione e randaggismo</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento TAXI.pdf" target="_blank">Regolamento TAXI</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Verde Tomo 1.pdf" target="_blank">Regolamento verde Tomo 1</a>
+                    <a href="Regolamenti del Comune di Monza/Regolamento Verde Tomo 2.pdf" target="_blank">Regolamento verde Tomo 2</a>
+                    <a href="Regolamenti del Comune di Monza/Trattamento Gioco d'azzardo LR 8 del 2013.pdf" target="_blank">Trattamento Gioco d'azzardo LR 8 2013</a> 
+                </div>
+
+                <div class="pdfList" id="pdfList2">
+                    <a href="https://ucimi.it/carta-verde/" target="_blank">UCI Carta Verde</a>
+                    <a href="http://polizia.altervista.org/index.html" target="_blank">Polizia alteravista</a>
+                    <a href="https://www.alphatango.it/" target="_blank">ALPHA TANGO</a>
+                    <a href="https://reve.aci.it/home" target="_blank">REVE</a>
+                    <a href="Veicoli Targa Estera/Circolazione veicolo estero 93 bis  Sansonne Milano.pdf" target="_blank">veicolo estero 93 bis Sansonne Milano febbraio 2023</a>
+                    <a href="Veicoli Targa Estera/Targa estera 93 bis 2024 Maurizio Marchi.pdf" target="_blank">93 bis Maurizio Marchi 2024</a>
+                    <a href="Veicoli Targa Estera/Veicoli esteri 93 bis e 132 cds.pdf" target="_blank">Veicoli esteri 93 bis e 132 cds</a>
+                    <a href="Veicoli Targa Estera/Veicoli esteri 93 bis schema ASAPS.pdf" target="_blank">schema 93 bis ASAPS</a>
+                    <a href="Veicoli Targa Estera/Veicoli esteri Manuale per il controllo.pdf" target="_blank">Manuale Giulio Valente Milano 2022</a>
+                    <a href="Veicoli Targa Estera/Veicoli targa estera 93 bis provvedimenti su veicolo.pdf" target="_blank">Veicoli esteri 93 bis provvedimento su veicolo</a>
+                </div>
+
+                <div class="pdfList" id="pdfList3">
+                    <a href="Polizia Giudiziaria/ATTI DI P.G. 2018.pdf" target="_blank">ATTI di PG 2018</a>
+                    <a href="Polizia Giudiziaria/DOCUMENTI_OBBLIGO_DI_ESIBIZIONE_SU_RICHIESTA_DI_OPERATORI_DI_POLIZIA 2.pdf" target="_blank">Obbligo esibizione documenti</a>
+                </div>
+
+                <div class="pdfList" id="pdfList4">
+                    <a href="Codici/Codice penale .pdf" target="_blank">Codice Penale</a>
+                    <a href="Codici/Codice di Procedura Penale.pdf" target="_blank">Codice Procedura Penale</a>
+                    <a href="Codici/Codice Civile.pdf" target="_blank">Codice Civile</a>
+                    <a href="Codici/Disposizioni attuative CPP.pdf" target="_blank">Disposizioni attuative CPP</a>
+                    <a href="Codici/Testo unico immigrazione.pdf" target="_blank">Testo Unico Immigrazione</a>
+                    <a href="Codici/Testo unico stupefacenti .pdf" target="_blank">Testo Unico Stupefacenti</a>
+                </div>
+
+                <div class="pdfList" id="pdfList5">
+                    <a href="Riforma Cartabia/Riforma Cartabia Milano .pdf" target="_blank">Riforma Cartabia Milano</a>
+                    <a href="Riforma Cartabia/Riforma cartabia modifiche.pdf" target="_blank">Riforma Cartabia Modifiche</a>
+                    <a href="Riforma Cartabia/Riforma_cartabia_modifica_D_lgs_150_2022_Agli_Uffici_esterni.pdf" target="_blank">Circolare mInistero Interno</a>
+                </div>
+
+                <div class="pdfList" id="pdfList6">
+                    <a href="Decreto Caivano/DECRETO CAIVANO - MODULISTICA - SET 2023.pdf" target="_blank">Decreto Caivano MODULISTICA 2023</a>
+                    <a href="Decreto Caivano/Decreto Caivano Circolare M.Interno.pdf" target="_blank">Decreto Caivano Circolare M.Interno</a>
+                    <a href="Decreto Caivano/Decreto Caivano Gazzetta Uff..pdf" target="_blank">Decreto Caivano Gazzetta Ufficiale</a>
+                </div>
+
+                <div class="pdfList" id="pdfList7">
+                    <a href="Codice Rosso/Linee guida Procura di Tivoli 1.pdf" target="_blank">Linee Guida Procura di Tivoli 1</a>
+                    <a href="Codice Rosso/Linee guida Procura di Tivoli 2.pdf" target="_blank">Linee Guida Procura di Tivoli 2</a>
+                    <a href="Codice Rosso/Procura di Bergamo Violenza di Genere.pdf" target="_blank">Procura di Bergamo Violenza di Genere</a>
+                    <a href="Codice Rosso/Prontuario 2023 violenza di genere CODICE ROSSO CC.pdf" target="_blank">Prontuario Codice Rosso Carabinieri</a>
+                </div>
+
+                <div class="pdfList" id="pdfList8">
+                    <a href="Codice della Strada/" target="_blank">Codice della Strada aggiornato</a>
+                </div>
+
+                <div class="pdfList" id="pdfList9">
+                    <a href="Ebrezza Stupefacenti 186 -187/Guida in stato di ebrezza alcolica e stupefacenti 186 187 cds.pdf" target="_blank">Ebrezza e stupefacenti 186-187</a>
+                </div>
+
+                <div class="pdfList" id="pdfList10">
+                    <a href="Immigrazione/Immigrazione normativa.pdf" target="_blank">Immigrazione normativa</a>
+                </div>
+
+                <div class="pdfList" id="pdfList11">
+                    <a href="TSO/Trattamento Sanitario Obbligatorio.pdf" target="_blank">Trattamento Sanitario Obbligatorio</a>
+                </div>
+
+                <div class="pdfList" id="pdfList12">
+                    <a href="Falso Documentale/Falso documentale  Soprov.pdf" target="_blank">Falso documentale Soprov</a>
+                    <a href="Falso Documentale/Falso documentale 2018.pdf" target="_blank">Falso documentale 2018</a>
+                    <a href="Falso Documentale/Falso documentale 2023 aggiornato riforma Cartabia.pdf" target="_blank">Falso documentale 2023 aggiornato Riforma Cartabia</a>
+                    <a href="Falso Documentale/Prontuario Documenti falsi.pdf" target="_blank">Prontuario Documenti Falsi</a>
+                    <a href="Falso Documentale/Vademecum Controllo documenti Falso.pdf" target="_blank">Vademecum Controllo Documenti Falsi</a>
+                    <a href="https://www.soprov.it/" target="_blank">Portale Soprov</a>
+                    <a href="https://www.consilium.europa.eu/prado/it/search-by-document-country.html" target="_blank">PRADO EUROPA</a>
+                    
+                </div>
+
+                <div class="pdfList" id="pdfList13">
+                    <a href="Autotrasporto/Autotrasporto normativa.pdf" target="_blank">Autotrasporto normativa</a>
+                </div>
+
+                <div class="pdfList" id="pdfList14">
+                    <a href="Infortunistica Stradale/CHECKLIST INFORTUNISTICA incidenti.pdf" target="_blank"> CHEKLISTI nfortunistica stradale</a>
+                    <a href="Infortunistica Stradale/Dichiarazioni infortunistica PL Milano.pdf" target="_blank"> Dichiarazioni Infortunistica PL Milano</a>
+                    <a href="Infortunistica Stradale/Dichiarazioni.pdf" target="_blank">Dichiarazioni</a>
+                    <a href="Infortunistica Stradale/Parti dei veicoli.pdf" target="_blank">Parti Dei Veicoli</a>
+                    <a href="Infortunistica Stradale/Prontuario infortunistica.pdf" target="_blank">Prontuario infortunistica</a>
+                    <a href="Infortunistica Stradale/Terminologia DANNI.pdf" target="_blank">Terminologia DANNI</a>
+                    <a href="Infortunistica Stradale/Dichiarazioni FACILE.pdf" target="_blank">Dichiarazioni FACILE</a>
+                </div>
+
+                <div class="pdfList" id="pdfList15">
+                    <a href="Riforma Cartabia/Riforma Cartabia aggiornamenti.pdf" target="_blank">Riforma Cartabia aggiornamenti</a>
+                </div>
+
+                <div class="pdfList" id="pdfList16">
+                    <a href="Inquinamento/Misure valide dal 1 Ottobre al 31 Marzo.pdf" target="_blank">Misure valide dal 1 ottobre al 31 Marzo</a>
+                    <a href="Inquinamento/Limitazioni Primo Livello.pdf" target="_blank">Limitazioni primo livello</a>
+                    <a href="Inquinamento/Limitazioni stufe e caminetti.pdf" target="_blank">Limitazioni stife e camineti</a>
+                    <a href="Inquinamento/Limitazioni Permanenti dal 1 aprile 2024.pdf" target="_blank">Limitazioni Permanenti dal 1 Aprile 2024</a>
+                    <a href="https://www.ilportaledellautomobilista.it/web/portale-automobilista/verifica-classe-ambientale-veicolo" target="_blank">Verifica Classe ambientale veicolo</a>
+                </div>
+
+                <div class="pdfList" id="pdfList17">
+                    <a href="Droga/Droga normativa.pdf" target="_blank">Droga normativa</a>
+                </div>
+
+                <div class="pdfList" id="pdfList18">
+                    <a href="Reati Depenalizzati/Reati depenalizzati normativa.pdf" target="_blank">Reati depenalizzati normativa</a>
+                </div>
+
+                <div class="pdfList" id="pdfList19">
+                    <a href="Armi/Armi normativa.pdf" target="_blank">Armi normativa</a>
+                </div>
+
+                <div class="pdfList" id="pdfList20">
+                    <a href="Droni/Droni normativa.pdf" target="_blank">Droni normativa</a>
+                </div>
+
+                <div class="pdfList" id="pdfList21">
+                    <a href="Videoriprese/Videoriprese normativa.pdf" target="_blank">Videoriprese normativa</a>
+                </div>
+
+                <div class="pdfList" id="pdfList22">
+                    <a href="Ambientale/Disposizione 2024 veicoli in sosta non funzionanti.pdf" target="_blank">Disposizione veicoli in sosta non funzionati monza 2024</a>
+                    <a href="Ambientale/Prontuario tutela ambientale.pdf" target="_blank">Prontuario Tutela Ambiente</a>
+                    <a href="Ambientale/Prontuario Violazioni Ambientali Monza 2022.pdf" target="_blank">Prontuario Violazioi Monza 2022</a>
+                    <a href="https://www.monzapulita.it/" target="_blank">Sangalli Monza pulita</a>
+                </div>
+
+                <div class="pdfList" id="pdfList23">
+                    <a href="Edilizia/Normativa Edilizia.pdf" target="_blank">Normativa Edilizia</a>
+                </div>
+
+                <div class="pdfList" id="pdfList24">
+                    <a href="Annonaria/Normativa Annonaria.pdf" target="_blank">Normativa Annonaria</a>
+                </div>
+
+                <div class="pdfList" id="pdfList25">
+                    <a href="Monopattini/Monopattini .pdf" target="_blank">Prontuario Monopattini</a>
+                    <a href="Monopattini/Monopattini e micro mobilità elettrica 6.8.2022.pdf" target="_blank">Monopattini e micromobilità elettrica</a>
+                    <a href="Monopattini/Monopattini monza .pdf" target="_blank">Monopattini Monza mappa stalli di sosta</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer style="background-color: #00b37d; color: white; text-align: center; padding: 15px;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <p>&copy; Tutti i diritti sono riservati a Web App Polizia Locale 2024 </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const comparti = document.querySelectorAll('.comparto');
+            comparti.forEach(comparto => {
+                comparto.addEventListener('click', function() {
+                    // Rimuove la classe active da tutti gli elementi
+                    comparti.forEach(c => c.classList.remove('active'));
+                    // Aggiunge la classe active all'elemento cliccato
+                    this.classList.add('active');
+                    // Nasconde tutte le liste PDF
+                    document.querySelectorAll('.pdfList').forEach(list => list.classList.remove('show'));
+                    // Mostra la lista PDF corrispondente all'elemento cliccato
+                    const targetId = this.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('show');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
